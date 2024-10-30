@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { BiChevronDown } from "react-icons/bi";
-import { AiOutlineSearch } from "react-icons/ai";
 import classNames from "classnames";
+import { useEffect, useState } from "react";
+import { AiOutlineSearch } from "react-icons/ai";
+import { BiChevronDown } from "react-icons/bi";
 
 type CountrySelectorProps = {
   onCountryChange: (country: string) => void;
@@ -9,10 +9,9 @@ type CountrySelectorProps = {
 
 const CountrySelector = ({ onCountryChange }: CountrySelectorProps) => {
   const [countries, setCountries] = useState<string[]>([]);
-  const [isSelectorOpened, setIsSelectorOpened] = useState<boolean>(false);
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [isSelectorOpened, setIsSelectorOpened] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
-
   useEffect(() => {
     fetch("https://restcountries.com/v2/all?fields=name")
       .then((res) => res.json())
@@ -21,20 +20,13 @@ const CountrySelector = ({ onCountryChange }: CountrySelectorProps) => {
         setCountries(countries);
       });
   }, []);
-
   return (
     <div className="w-72 font-medium h-80">
       <div
+        className="bg-white w-full p-2 flex items-center justify-between border rounded"
         onClick={() => setIsSelectorOpened(!isSelectorOpened)}
-        className={classNames({
-          "bg-white w-full p-2 flex items-center justify-between border rounded":
-            true,
-          "text-gray-700": !selectedCountry,
-        })}
       >
-        <span className="text-ellipsis overflow-hidden whitespace-nowrap ">
-          {selectedCountry ?? "Select Country"}
-        </span>
+        <span>{selectedCountry ?? "Select Country"}</span>
         <BiChevronDown
           size={20}
           className={classNames({ "rotate-180": isSelectorOpened })}
@@ -66,9 +58,9 @@ const CountrySelector = ({ onCountryChange }: CountrySelectorProps) => {
             })}
             onClick={() => {
               setSelectedCountry(country);
-              onCountryChange(country);
-              setIsSelectorOpened(false);
               setInputValue("");
+              setIsSelectorOpened(false);
+              onCountryChange(country);
             }}
           >
             {country}
